@@ -103,15 +103,10 @@ server.post(
 	'/edit/:id',
 	express.urlencoded({ extended: false }),
 	(req, res) => {
-		const id = req.params.id
-		const index = posts.findIndex((post) => post.id === id)
-		if (index !== -1) {
-			posts[index].message = req.body.message
-			posts[index].created = Date.now()
-			res.redirect('/posts')
-		} else {
-			res.status(404).send('Post not found')
-		}
+		const post = { id: req.params.id, content: req.body.message };
+    console.log(post);
+    posts.editPost(post);
+    res.redirect('/posts');
 	}
 )
 
