@@ -13,38 +13,38 @@ const db = require('../database/db.js')
 }
 
 {
-	const select_all_posts = db.prepare(/*sql*/ `
+  const select_all_posts = db.prepare(/*sql*/ `
   SELECT
     id,
     author,
     content,
-    TIME(postDate),
+    postDate,
     edited,
     flags
   FROM posts
-`)
+`);
 
-	function listPosts() {
-		return select_all_posts.all()
-	}
+  function listPosts() {
+    return select_all_posts.all();
+  }
 }
 
 {
-	const select_safe_posts = db.prepare(/*sql*/ `
+  const select_safe_posts = db.prepare(/*sql*/ `
   SELECT
     id,
     author,
     content,
-    TIME(postDate),
+    postDate,
     edited,
     flags
   FROM posts
   WHERE flags IS NULL
-`)
+`);
 
-	function listSafePosts() {
-		return select_safe_posts.all()
-	}
+  function listSafePosts() {
+    return select_safe_posts.all();
+  }
 }
 
 {
@@ -76,12 +76,12 @@ const db = require('../database/db.js')
     id,
     author,
     content,
-    TIME(postDate),
+    postDate,
     edited,
     flags
   FROM posts
   WHERE id = $id
-`)
+`);
 
 	function selectPost(id) {
 		console.log(`ID: ${id}`)

@@ -6,8 +6,7 @@
 		<div class="singlePost">
 			<div><label>Name:&nbsp;</label><%- sanitize(post.author) %></div>
 			<div>
-				<label>Date:&nbsp;</label><%= new
-				Date(post.date).toLocaleString('en-GB') %>
+				<label>Date:&nbsp;</label><%= new Date(post.postDate).toLocaleString('en-GB') %>
 			</div>
 			<div>
 				<label for="message" class="topAligned">Text: </label>

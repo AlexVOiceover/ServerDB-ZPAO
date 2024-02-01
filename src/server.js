@@ -97,6 +97,8 @@ server.get('/openEdit/:id', (req, res) => {
 		post: post,
 		sanitize: sanitize,
 	})
+
+	console.log(post);
 })
 
 server.post(
