@@ -1,15 +1,15 @@
 const db = require('../database/db.js')
 
 {
-	const insert_post = db.prepare(/*sql*/ `
-  INSERT INTO posts (author, content)
-  VALUES ($author, $content)
+  const insert_post = db.prepare(/*sql*/ `
+  INSERT INTO posts (author, content, flags)
+  VALUES ($author, $content, $flags)
   RETURNING id, author, content, postDate, edited, flags
-`)
+`);
 
-	function createPost(post) {
-		return insert_post.get(post)
-	}
+  function createPost(post) {
+    return insert_post.get(post);
+  }
 }
 
 {
@@ -39,7 +39,7 @@ const db = require('../database/db.js')
     edited,
     flags
   FROM posts
-  WHERE flags IS NULL
+  WHERE flags = ''
 `);
 
   function listSafePosts() {

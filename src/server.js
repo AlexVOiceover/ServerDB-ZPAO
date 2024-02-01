@@ -28,59 +28,65 @@ server.get('/', (req, res) => {
 	})
 })
 
+console.log(posts.listSafePosts());
+
 server.get('/posts', (req, res) => {
-	res.render('postsPage', {
-		title: 'Posts',
-		posts: posts.listPosts(),
-		sanitize: sanitize,
-		values: req.body || {},
-	})
-})
+  res.render('postsPage', {
+    title: 'Posts',
+    posts: posts.listSafePosts(),
+    sanitize: sanitize,
+    values: req.body || {},
+  });
+});
 
 server.post('/', express.urlencoded({ extended: false }), async (req, res) => {
-	const nickname = req.body.nickname
-	const message = req.body.message
-	const errors = {}
-	let post = {}
+  const nickname = req.body.nickname;
+  const message = req.body.message;
+  const errors = {};
+  const author = nickname;
+  const content = message;
+  const flaggedCategories = await moderate(message);
+  const flags = formatListWithAnd(flaggedCategories);
 
-	if (!nickname) {
-		errors.nickname = 'Please enter your nickname'
-	}
+  let post = { author, content, flags };
 
-	if (!message) {
-		errors.message = 'Please enter a message'
-	}
+  if (!nickname) {
+    errors.nickname = 'Please enter your nickname';
+  }
 
-	if (Object.keys(errors).length === 0) {
-		// Check for moderation flags
-		const flaggedCategories = await moderate(message)
-		if (flaggedCategories.length > 0) {
-			// Add moderation error
-			const formattedCategories = formatListWithAnd(flaggedCategories)
-			errors.message = `Post flagged for ${formattedCategories} content. It won't be posted.`
-		}
-	}
+  if (!message) {
+    errors.message = 'Please enter a message';
+  }
 
-	if (Object.keys(errors).length > 0) {
-		// Render form with errors
-		res.render('formPage', {
-			title: 'New Post',
-			sanitize: sanitize,
-			values: req.body,
-			errors: errors,
-		})
-	} else {
-		// Create and add the post
-		// const created = Date.now()
-		// const id = uuidv4()
-		const author = nickname
-		const content = message
-		post = { author, content }
-		console.log(post)
-		posts.createPost(post)
-		res.redirect('/posts')
-	}
-})
+  if (Object.keys(errors).length === 0) {
+    // Check for moderation flags
+
+    if (flaggedCategories.length > 0) {
+      // Add moderation error
+
+      errors.message = `Post flagged for ${flags} content. It won't be posted.`;
+      posts.createPost(post);
+    }
+  }
+
+  if (Object.keys(errors).length > 0) {
+    // Render form with errors
+    res.render('formPage', {
+      title: 'New Post',
+      sanitize: sanitize,
+      values: req.body,
+      errors: errors,
+    });
+  } else {
+    // Create and add the post
+    // const created = Date.now()
+    // const id = uuidv4()
+
+    console.log(post);
+    posts.createPost(post);
+    res.redirect('/posts');
+  }
+});
 
 server.get('/delete/:id', (req, res) => {
 	const id = req.params.id
