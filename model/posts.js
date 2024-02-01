@@ -43,7 +43,7 @@ const db = require('../database/db.js')
 `)
 
 	function listSafePosts() {
-    return select_all_posts.all();
+    return select_safe_posts.all();
   }
 }
 
