@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS posts (
     content TEXT,
     postDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     edited INTEGER DEFAULT 0 CHECK(edited IN (0,1) ) 
-    flags TEXT,
+    flags TEXT DEFAULT "",
 )
 
 COMMIT;
