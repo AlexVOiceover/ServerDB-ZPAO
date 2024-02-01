@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const express = require('express')
 const server = express()
-const posts = require('model/posts.js');
+const posts = require('../model/posts.js');
 
 const { sanitize, moderate, formatListWithAnd } = require('./functions');
 
@@ -17,7 +17,7 @@ const { listPosts } = require('../model/posts');
 // Serve static files from the 'public' directory
 server.use(express.static('public'));
 
-const posts = [];
+// const posts = [];
 
 server.get('/', (req, res) => {
   res.render('formPage', {
