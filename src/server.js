@@ -3,37 +3,39 @@ require('dotenv').config()
 
 const express = require('express')
 const server = express()
+const posts = require('model/posts.js');
 
-const { sanitize, moderate, formatListWithAnd } = require('./functions')
+const { sanitize, moderate, formatListWithAnd } = require('./functions');
 
 //Set view engine to EJS
-server.set('view engine', 'ejs')
+server.set('view engine', 'ejs');
 
 //For the ID creation
-const { v4: uuidv4 } = require('uuid')
+const { v4: uuidv4 } = require('uuid');
+const { listPosts } = require('../model/posts');
 
 // Serve static files from the 'public' directory
-server.use(express.static('public'))
+server.use(express.static('public'));
 
-const posts = []
+const posts = [];
 
 server.get('/', (req, res) => {
-	res.render('formPage', {
-		title: 'New Post',
-		sanitize: sanitize,
-		values: req.body || {},
-		errors: {},
-	})
-})
+  res.render('formPage', {
+    title: 'New Post',
+    sanitize: sanitize,
+    values: req.body || {},
+    errors: {},
+  });
+});
 
 server.get('/posts', (req, res) => {
-	res.render('postsPage', {
-		title: 'Posts',
-		posts: posts,
-		sanitize: sanitize,
-		values: req.body || {},
-	})
-})
+  res.render('postsPage', {
+    title: 'Posts',
+    posts: posts.listSafePosts(),
+    sanitize: sanitize,
+    values: req.body || {},
+  });
+});
 
 server.post('/', express.urlencoded({ extended: false }), async (req, res) => {
 	const nickname = req.body.nickname

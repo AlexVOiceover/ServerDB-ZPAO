@@ -4,10 +4,10 @@
 	<body>
 		<h1>Post</h1>
 		<div class="singlePost">
-			<div><label>Name:&nbsp;</label><%- sanitize(post.nickname) %></div>
+			<div><label>Name:&nbsp;</label><%- sanitize(post.author) %></div>
 			<div>
 				<label>Date:&nbsp;</label><%= new
-				Date(post.created).toLocaleString('en-GB') %>
+				Date(post.date).toLocaleString('en-GB') %>
 			</div>
 			<div>
 				<label for="message" class="topAligned">Text: </label>
@@ -15,7 +15,7 @@
 
 			<form action="/edit/<%= post.id %>" method="POST">
 				<textarea id="message" class="tall" name="message">
-<%- post.message ? sanitize(post.message) : '' %></textarea>
+<%- post.content ? sanitize(post.content) : '' %></textarea>
 
 				<button class="right-button marginTop-button" type="submit">
 					Modify Post

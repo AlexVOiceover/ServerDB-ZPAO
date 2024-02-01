@@ -42,9 +42,9 @@ const db = require('../database/db.js')
   WHERE flags IS NULL
 `)
 
-	function listPosts() {
-		return select_all_posts.all()
-	}
+	function listSafePosts() {
+    return select_all_posts.all();
+  }
 }
 
 {
@@ -73,4 +73,10 @@ const db = require('../database/db.js')
 //const result = createTask({ content: "stuff", complete: 1 });
 //console.log(result);
 
-module.exports = { createPost, listPosts, removePost, editPost }
+module.exports = {
+  createPost,
+  listPosts,
+  removePost,
+  editPost,
+  listSafePosts,
+};
