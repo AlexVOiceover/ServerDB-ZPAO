@@ -70,6 +70,24 @@ const db = require('../database/db.js')
 	}
 }
 
+{
+  const select_post = db.prepare(/*sql*/ `
+  SELECT
+    id,
+    author,
+    content,
+    TIME(postDate),
+    edited,
+    flags
+  FROM posts
+  WHERE id = $id
+`);
+
+  function selectPost(id) {
+    return select_post.get(id);
+  }
+}
+
 //const result = createTask({ content: "stuff", complete: 1 });
 //console.log(result);
 
@@ -79,4 +97,5 @@ module.exports = {
   removePost,
   editPost,
   listSafePosts,
+  selectPost,
 };

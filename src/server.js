@@ -83,28 +83,21 @@ server.post('/', express.urlencoded({ extended: false }), async (req, res) => {
 });
 
 server.get('/delete/:id', (req, res) => {
-	const id = req.params.id
-	const index = posts.findIndex((post) => post.id.toString() === id)
-	if (index !== -1) {
-		posts.splice(index, 1)
-	}
-	res.redirect('/posts')
-})
+  const id = req.params.id;
+  posts.removePost(id);
+  res.redirect('/posts');
+});
 
 server.get('/openEdit/:id', (req, res) => {
-	const id = req.params.id
-	const post = posts.find((post) => post.id === id)
+  const id = req.params.id;
+  const post = posts.selectPost(id);
 
-	if (post) {
-		res.render('singlePost', {
-			title: 'Edit Post',
-			post: post,
-			sanitize: sanitize,
-		})
-	} else {
-		res.status(404).send('Post not found')
-	}
-})
+  res.render('singlePost', {
+    title: 'Edit Post',
+    post: post,
+    sanitize: sanitize,
+  });
+});
 
 server.post(
 	'/edit/:id',
