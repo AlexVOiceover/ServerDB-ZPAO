@@ -43,8 +43,8 @@ const db = require('../database/db.js')
 `)
 
 	function listSafePosts() {
-    return select_safe_posts.all();
-  }
+		return select_safe_posts.all()
+	}
 }
 
 {
@@ -71,7 +71,7 @@ const db = require('../database/db.js')
 }
 
 {
-  const select_post = db.prepare(/*sql*/ `
+	const select_post = db.prepare(/*sql*/ `
   SELECT
     id,
     author,
@@ -81,21 +81,23 @@ const db = require('../database/db.js')
     flags
   FROM posts
   WHERE id = $id
-`);
+`)
 
-  function selectPost(id) {
-    return select_post.get(id);
-  }
+	function selectPost(id) {
+		console.log(`ID: ${id}`)
+
+		return select_post.get(id)
+	}
 }
 
 //const result = createTask({ content: "stuff", complete: 1 });
 //console.log(result);
 
 module.exports = {
-  createPost,
-  listPosts,
-  removePost,
-  editPost,
-  listSafePosts,
-  selectPost,
-};
+	createPost,
+	listPosts,
+	removePost,
+	editPost,
+	listSafePosts,
+	selectPost,
+}
