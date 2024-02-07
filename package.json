@@ -5,8 +5,10 @@
 	"main": "src/server.js",
 	"scripts": {
 		"test": "node test/test.js",
-		"start": "node src/index.js",
-		"dev": "nodemon src/index.js"
+		"start": "node index.js",
+		"dev": "nodemon src/index.js",
+		"build": "echo \"No build step required\"",
+		"preinstall": "npm install -g npm@10.4.0"
 	},
 	"repository": {
 		"type": "git",
@@ -30,5 +32,9 @@
 	"devDependencies": {
 		"@flydotio/dockerfile": "^0.5.0",
 		"nodemon": "^3.0.3"
+	},
+	"engines": {
+		"node": ">=18.17.1",
+		"npm": "10.4.0"
 	}
 }
