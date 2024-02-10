@@ -15,8 +15,8 @@ const db = new Database('microbloggingDB')
  * This is responsible for creating the tables and columns we need
  * It should be safe to run every time
  */
-const schemaPath = join('database', 'schema.sql')
-const schema = readFileSync(schemaPath, 'utf-8')
+const schemaPath = path.join(__dirname, '..', 'database', 'schema.sql');
+const schema = fs.readFileSync(schemaPath, 'utf8');
 db.exec(schema)
 
 /**
