@@ -7,7 +7,8 @@ const Database = require('better-sqlite3')
  * Otherwise connect to the DB contained in the file we specified (if it exists).
  * If it does not exist create a new DB file and connect to it.
  */
-const db = new Database(process.env.DB_FILE)
+// const db = new Database(process.env.DB_FILE)
+const db = new Database('microbloggingDB')
 
 /**
  * Make sure DB has the right structure by running schema.sql
