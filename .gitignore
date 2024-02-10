@@ -1,3 +1,32 @@
 /node_modules
 .DS_Store
 .env
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Exclude all .tfvars files, which might contain sensitive data, such as
+# password, private keys, and other secrets. Alternatively, you can choose to
+# include specific .tfvars files using the ! exception operator.
+*.tfvars
+
+# Ignore override files as they are usually used to override resources locally and
+# are not meant to be committed
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore the .terraform directory
+.terraform/*
+
+# Ignore any .terraform.lock.hcl files, which contain provider dependency lock information
+.terraform.lock.hcl
