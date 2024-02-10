@@ -5,7 +5,7 @@
 	"main": "src/server.js",
 	"scripts": {
 		"test": "node test/test.js",
-		"start": "node index.js",
+		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
 		"build": "echo \"No build step required\"",
 		"preinstall": "npm install -g npm@10.4.0"

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 //Needed for HTTP post to the moderation endpoint URL
 const axios = require('axios')
 
@@ -8,12 +10,7 @@ const openai = new OpenAI({
 })
 
 function sanitize(string) {
-	return string
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&#039;')
+	return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
 }
 
 async function moderate(message) {
@@ -32,9 +29,7 @@ async function moderate(message) {
 		const results = response.data.results
 		console.log(`results from openAI: ${results}`)
 		if (results && results.length > 0) {
-			const flaggedCategories = Object.keys(results[0].categories).filter(
-				(category) => results[0].categories[category]
-			)
+			const flaggedCategories = Object.keys(results[0].categories).filter((category) => results[0].categories[category])
 			console.log(flaggedCategories)
 			return flaggedCategories
 		} else {
