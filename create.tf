@@ -13,23 +13,30 @@ resource "aws_instance" "app_instance" {
   # Security group to allow SSH and web traffic
  vpc_security_group_ids = [aws_security_group.app_sg.id]
 
-  user_data = <<-EOF
-              #!/bin/bash
-              sudo yum update -y
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-              export NVM_DIR="$HOME/.nvm"
-              [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-              nvm install node
-              npm install -g npm@latest
-              sudo yum install git -y
-              git clone https://github.com/FAC29A/ServerDB-ZPAO.git
-              cd /home/ec2-user/ServerDB-ZPAO
-              npm install
-              npm install -g pm2
-              pm2 start src/index.js --name Microblogging
-              pm2 save
-              pm2 startup
-              EOF
+user_data = <<-EOF
+   #!/bin/bash
+            sudo yum update -y
+            
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+            export NVM_DIR="/home/ec2-user/.nvm"
+
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install node
+            npm install -g npm@latest
+            sudo yum install git -y
+
+            mkdir -p /home/ec2-user/ServerDB-ZPAO
+            chown ec2-user:ec2-user /home/ec2-user/ServerDB-ZPAO
+            git clone https://github.com/FAC29A/ServerDB-ZPAO.git
+            cd /home/ec2-user/ServerDB-ZPAO
+            npm install
+            npm install -g pm2
+            pm2 start src/index.js --name Microblogging
+            pm2 save
+            pm2 startup
+            EOF
+
+
 
   tags = {
     Name = "MicrobloggingTerraform"

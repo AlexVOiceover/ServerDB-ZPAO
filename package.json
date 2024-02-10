@@ -8,7 +8,7 @@
 		"start": "node src/index.js",
 		"dev": "nodemon src/index.js",
 		"build": "echo \"No build step required\"",
-		"preinstall": "npm install -g npm@10.4.0"
+		"terraform": "terraform init && terraform plan && terraform apply -auto-approve"
 	},
 	"repository": {
 		"type": "git",
