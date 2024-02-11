@@ -14,28 +14,46 @@ resource "aws_instance" "app_instance" {
  vpc_security_group_ids = [aws_security_group.app_sg.id]
 
 user_data = <<-EOF
-   #!/bin/bash
-            sudo yum update -y
-            
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-            export NVM_DIR="/home/ec2-user/.nvm"
+#!/bin/bash
+sudo yum update -y
+sudo yum install git -y
 
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm install node
-            npm install -g npm@latest
-            sudo yum install git -y
+# Install NVM as the ec2-user
+sudo -u ec2-user bash <<'EOF2'
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+EOF2
 
-            mkdir -p /home/ec2-user/ServerDB-ZPAO
-            chown ec2-user:ec2-user /home/ec2-user/ServerDB-ZPAO
-            git clone -b AWSSecrets https://github.com/FAC29A/ServerDB-ZPAO.git /home/ec2-user/ServerDB-ZPAO
-            cd /home/ec2-user/ServerDB-ZPAO
-            npm install
-            npm install -g pm2
-            pm2 start src/index.js --name Microblogging
-            pm2 save
-            pm2 startup
-            EOF
+# Ensure .bashrc exists, append NVM initialization to it for ec2-user, and ensure ownership is correct
+touch /home/ec2-user/.bashrc
+echo 'export NVM_DIR="$HOME/.nvm"' >> /home/ec2-user/.bashrc
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/ec2-user/.bashrc
+echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/ec2-user/.bashrc
+chown ec2-user:ec2-user /home/ec2-user/.bashrc
 
+# Append the NVM source string to .bash_profile to ensure it's sourced for login shells
+echo 'export NVM_DIR="$HOME/.nvm"' >> /home/ec2-user/.bash_profile
+echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/ec2-user/.bash_profile
+echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/ec2-user/.bash_profile
+
+# Run the rest of the commands as ec2-user in a login shell
+sudo -i -u ec2-user bash <<'EOF3'
+source $HOME/.bashrc
+nvm install node
+nvm alias default node
+
+npm install -g npm@latest 
+
+mkdir -p $HOME/ServerDB-ZPAO
+git clone -b AWSSecrets https://github.com/FAC29A/ServerDB-ZPAO.git $HOME/ServerDB-ZPAO
+cd $HOME/ServerDB-ZPAO
+npm install
+npm run start
+# npm install -g pm2
+# pm2 start src/index.js --name Microblogging
+# pm2 save
+# pm2 startup
+EOF3
+EOF
 
 
   tags = {
