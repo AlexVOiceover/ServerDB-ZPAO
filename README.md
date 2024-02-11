@@ -85,3 +85,6 @@ Create microbloggingRole and attach to it microbloggingPolicy.
 ## VisualStudio
 
 Also need a VisualStudio user with the policy microbloggingPolicy attached.
+
+If encounter problems on the EC2 instance check:
+/var/log/cloud-init-output.log
