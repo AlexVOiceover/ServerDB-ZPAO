@@ -26,12 +26,8 @@ async function getSecrets() {
 	return cachedSecrets
 }
 
-// const { OpenAI } = require('openai')
+const { OpenAI } = require('openai')
 let openai
-
-// const openai = new OpenAI({
-// 	apiKey: process.env.OPENAI_API_KEY,
-// })
 
 function sanitize(string) {
 	return string.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
@@ -40,7 +36,7 @@ function sanitize(string) {
 async function moderate(message) {
 	try {
 		const secrets = await getSecrets()
-		// Now that we have the secrets, we can instantiate OpenAI if we haven't already
+		// Now that we have the secrets, we can instantiate OpenAI
 		if (!openai) {
 			openai = new OpenAI({
 				apiKey: secrets.OPENAI_API_KEY,
