@@ -1,37 +1,90 @@
-# Server Project - Microblogging Site
-This web application, built with Node.js and Express, allows users to create, edit, and view posts. The application incorporates essential features like posting messages, content moderation using OpenAI API, and editing and deleting posts. The application has been deployed on Fly.io, and you can access it [here](<https://server-zukhra-paing-alex.fly.dev/>).
+# Instructions
 
-## Getting Started
+# AWS Config
 
-1. **Install Dependencies:**
-   - No need to install dependencies manually, as the application is deployed.
+## AWS secret
 
-2. **Access the Application:**
-   - Open your web browser and go to the provided link for the deployed application.
+Called MicrobloggingSecrets witth the keys:
 
-## Features
+OPENAI_API_KEY
+DB_FILE
 
-### Posting a New Message
+## Policy
 
-- Access the homepage (`/`) to submit a new post.
-- Enter your name (`nickname`) and a message (`text`) in the form.
-- Click the "Send" button to submit the post.
+Called microbloggingPolicy with the content:
+{
+"Version": "2012-10-17",
+"Statement": [
+{
+"Effect": "Allow",
+"Action": [
+"ec2:CreateSecurityGroup",
+"ec2:DescribeSecurityGroups",
+"ec2:DescribeVpcs",
+"ec2:AuthorizeSecurityGroupIngress",
+"ec2:AuthorizeSecurityGroupEgress",
+"ec2:RevokeSecurityGroupEgress",
+"ec2:RevokeSecurityGroupIngress",
+"ec2:DeleteSecurityGroup",
+"ec2:DescribeInstanceTypes",
+"ec2:CreateTags",
+"ec2:DescribeTags",
+"ec2:DescribeInstanceAttribute",
+"ec2:RunInstances",
+"ec2:DescribeInstances",
+"ec2:TerminateInstances",
+"ec2:DescribeVolumes",
+"ec2:DescribeInstanceCreditSpecifications",
+"ec2:StopInstances",
+"ec2:StartInstances",
+"ec2:ModifyInstanceAttribute",
+"ec2:DescribeNetworkInterfaces",
+"ec2:ModifyNetworkInterfaceAttribute"
+],
+"Resource": "\*"
+},
+{
+"Effect": "Allow",
+"Action": [
+"secretsmanager:GetSecretValue",
+"secretsmanager:DescribeSecret",
+"secretsmanager:ListSecretVersionIds"
+],
+"Resource": "\*"
+},
+{
+"Effect": "Allow",
+"Action": [
+"iam:CreateInstanceProfile",
+"iam:GetInstanceProfile",
+"iam:AddRoleToInstanceProfile",
+"iam:PassRole",
+"iam:GetRole",
+"iam:ListInstanceProfiles",
+"iam:DeleteInstanceProfile",
+"iam:RemoveRoleFromInstanceProfile"
+],
+"Resource": "\*"
+}
+]
+}
 
-### Viewing Posts
+The secretsmanager and iam sections should use a more restricted Resource than "\*"
+Example for secretmanager (replace the \*\*\*\*\* for the AWS user ID):
+"Resource": "arn:aws:secretsmanager:eu-west-2:\*\*\*\*\*:secret:MicrobloggingSecrets-\*"
 
-- Visit the `/posts` page to see a list of all posted messages by clicking the button "Show posts"
-- Each post displays the name, message, and creation timestamp.
+Example for iam:
+"Resource": [
+"arn:aws:iam::**************:role/microbloggingRole",
+"arn:aws:iam::**************:instance-profile/*",
+"arn:aws:iam::**************:role/*"
+]
 
-### Moderation
+## Role
 
-- Posts are checked for moderation based on specific criteria using the OpenAI API.
-- If a post is flagged, it won't be displayed.
+Create microbloggingRole and attach to it microbloggingPolicy
+There are mentions to microbloggingRole
 
+## VisualStudio
 
-### Editing and Deleting Posts
-
-- Click on "Edit" next to a post to modify its content.
-- Click on "Delete" to remove a post.
-
-
-
+Also need a VisualStudio user with the policy microbloggingPolicy attached

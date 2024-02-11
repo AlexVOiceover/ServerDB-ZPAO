@@ -3,13 +3,18 @@ provider "aws" {
   region = "eu-west-2"
 }
 
+# Create an IAM instance profile for the microbloggingRole
+resource "aws_iam_instance_profile" "microblogging_profile" {
+  name = "microbloggingProfile"
+  role = "microbloggingRole"
+  }
+
 #Create EC2 Instance
 resource "aws_instance" "app_instance" {
-  ami           = "ami-027d95b1c717e8c5d"  # Example AMI, replace with a current one
+  ami           = "ami-027d95b1c717e8c5d"
   instance_type = "t2.micro"
-
   key_name = "microblogginKeyPair"
-
+  iam_instance_profile   = aws_iam_instance_profile.microblogging_profile.name
   # Security group to allow SSH and web traffic
  vpc_security_group_ids = [aws_security_group.app_sg.id]
 
