@@ -1,6 +1,4 @@
-require('dotenv').config()
-
-const fs = require('fs') // Corrected this line
+const fs = require('fs')
 const Database = require('better-sqlite3')
 const path = require('path')
 
@@ -9,8 +7,8 @@ const path = require('path')
  * Otherwise connect to the DB contained in the file we specified (if it exists).
  * If it does not exist create a new DB file and connect to it.
  */
-const db = new Database(process.env.DB_FILE)
-//const db = new Database('microbloggingDB')
+//const db = new Database(process.env.DB_FILE)
+const db = new Database('microbloggingDB')
 
 /**
  * Make sure DB has the right structure by running schema.sql
@@ -21,8 +19,5 @@ const schemaPath = path.join(__dirname, '..', 'database', 'schema.sql')
 const schema = fs.readFileSync(schemaPath, 'utf8')
 db.exec(schema)
 
-/**
- * Export the DB for use in other files
- */
-
+//Export the DB for use in other files
 module.exports = db
