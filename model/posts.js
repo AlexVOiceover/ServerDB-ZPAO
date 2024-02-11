@@ -1,19 +1,19 @@
 const db = require('../database/db.js')
 
 {
-  const insert_post = db.prepare(/*sql*/ `
+	const insert_post = db.prepare(/*sql*/ `
   INSERT INTO posts (author, content, flags)
   VALUES ($author, $content, $flags)
   RETURNING id, author, content, postDate, edited, flags
-`);
+`)
 
-  function createPost(post) {
-    return insert_post.get(post);
-  }
+	function createPost(post) {
+		return insert_post.get(post)
+	}
 }
 
 {
-  const select_all_posts = db.prepare(/*sql*/ `
+	const select_all_posts = db.prepare(/*sql*/ `
   SELECT
     id,
     author,
@@ -22,15 +22,15 @@ const db = require('../database/db.js')
     edited,
     flags
   FROM posts
-`);
+`)
 
-  function listPosts() {
-    return select_all_posts.all();
-  }
+	function listPosts() {
+		return select_all_posts.all()
+	}
 }
 
 {
-  const select_safe_posts = db.prepare(/*sql*/ `
+	const select_safe_posts = db.prepare(/*sql*/ `
   SELECT
     id,
     author,
@@ -40,11 +40,11 @@ const db = require('../database/db.js')
     flags
   FROM posts
   WHERE flags = ''
-`);
+`)
 
-  function listSafePosts() {
-    return select_safe_posts.all();
-  }
+	function listSafePosts() {
+		return select_safe_posts.all()
+	}
 }
 
 {
@@ -54,6 +54,16 @@ const db = require('../database/db.js')
 
 	function removePost(id) {
 		delete_post.run(id)
+	}
+}
+
+{
+	const drop_db = db.prepare(/*sql*/ `
+  DELETE FROM posts
+`)
+
+	function dropDB() {
+		drop_db.run()
 	}
 }
 
@@ -81,7 +91,7 @@ const db = require('../database/db.js')
     flags
   FROM posts
   WHERE id = $id
-`);
+`)
 
 	function selectPost(id) {
 		console.log(`ID: ${id}`)
@@ -90,9 +100,6 @@ const db = require('../database/db.js')
 	}
 }
 
-//const result = createTask({ content: "stuff", complete: 1 });
-//console.log(result);
-
 module.exports = {
 	createPost,
 	listPosts,
@@ -100,4 +107,5 @@ module.exports = {
 	editPost,
 	listSafePosts,
 	selectPost,
+	dropDB,
 }

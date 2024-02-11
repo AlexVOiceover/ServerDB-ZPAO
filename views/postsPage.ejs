@@ -4,23 +4,16 @@
 	<body>
 		<h1>All posts</h1>
 		<ul>
-			<% posts.forEach((post) => { const date = new Date(post.postDate); const
-			prettyDate = date.toLocaleString('en-GB'); %>
+			<% posts.forEach((post) => { const date = new Date(post.postDate); const prettyDate = date.toLocaleString('en-GB'); %>
 			<li>
 				<div class="singlePost">
 					<p class="message"><%- sanitize(post.content) %></p>
-					<p class="nameAndDate">
-						by: "<%- sanitize(post.author) %>" on: <%= prettyDate %>
-					</p>
+					<p class="nameAndDate">by: "<%- sanitize(post.author) %>" on: <%= prettyDate %></p>
 					<div class="buttonsGroup">
 						<form class="buttonForm" action="/openEdit/<%= post.id %>" method="GET">
 							<button type="submit">Edit Post</button>
 						</form>
-						<form
-							class="buttonForm"
-							action="/delete/<%= post.id %>"
-							method="GET"
-						>
+						<form class="buttonForm" action="/delete/<%= post.id %>" method="GET">
 							<button type="submit" class="right-button">Delete</button>
 						</form>
 					</div>
@@ -28,8 +21,13 @@
 			</li>
 			<% }); %>
 		</ul>
-		<form class="buttonForm" action="/back" method="GET">
-			<button type="submit">Back</button>
-		</form>
+		<div class="buttonsGroup">
+			<form class="buttonForm" action="/back" method="GET">
+				<button type="submit">Back</button>
+			</form>
+			<form class="buttonForm" action="/deleteAll" method="GET">
+				<button type="submit">Delete All Messages</button>
+			</form>
+		</div>
 	</body>
 </html>
