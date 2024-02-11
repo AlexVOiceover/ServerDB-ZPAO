@@ -27,7 +27,7 @@ user_data = <<-EOF
 
             mkdir -p /home/ec2-user/ServerDB-ZPAO
             chown ec2-user:ec2-user /home/ec2-user/ServerDB-ZPAO
-            git clone https://github.com/FAC29A/ServerDB-ZPAO.git
+            git clone -b AWSSecrets https://github.com/FAC29A/ServerDB-ZPAO.git /home/ec2-user/ServerDB-ZPAO
             cd /home/ec2-user/ServerDB-ZPAO
             npm install
             npm install -g pm2
