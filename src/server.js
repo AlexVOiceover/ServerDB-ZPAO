@@ -1,6 +1,3 @@
-// Load environment variables from .env file
-require('dotenv').config()
-
 const express = require('express')
 const server = express()
 const posts = require('../model/posts.js')
