@@ -1,17 +1,15 @@
 # Instructions
 
-# AWS Config
-
 ## AWS secret
 
-Called MicrobloggingSecrets witth the keys:
+Create "MicrobloggingSecrets" witth the keys:
 
 OPENAI_API_KEY
 DB_FILE
 
 ## Policy
 
-Called microbloggingPolicy with the content:
+Create "microbloggingPolicy" with the content:
 {
 "Version": "2012-10-17",
 "Statement": [
@@ -82,9 +80,8 @@ Example for iam:
 
 ## Role
 
-Create microbloggingRole and attach to it microbloggingPolicy
-There are mentions to microbloggingRole
+Create microbloggingRole and attach to it microbloggingPolicy.
 
 ## VisualStudio
 
-Also need a VisualStudio user with the policy microbloggingPolicy attached
+Also need a VisualStudio user with the policy microbloggingPolicy attached.
