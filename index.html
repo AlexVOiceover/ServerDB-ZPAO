@@ -8,7 +8,7 @@
 		<script type="text/javascript">
 			// Function to check if the app is ready
 			function checkAppReady() {
-				fetch('http://localhost:8080/health') // Adjust with the actual health check endpoint of your app
+				fetch('http://localhost:8080/') // Adjust with the actual health check endpoint of your app
 					.then((response) => {
 						if (response.ok) {
 							window.location.href = 'http://localhost:8080/' // Redirect to the app when it's ready
