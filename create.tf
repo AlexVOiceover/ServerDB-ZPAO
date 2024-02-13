@@ -30,11 +30,7 @@ sudo service httpd start
 # Enable httpd to start on boot
 sudo systemctl enable httpd
 
-mkdir -p $HOME/ServerDB-ZPAO
-git clone -b AWSSecrets https://github.com/FAC29A/ServerDB-ZPAO.git $HOME/ServerDB-ZPAO
-cd $HOME/ServerDB-ZPAO
-# Copy the index.html from your project to the web server's document root
-sudo cp index.html /var/www/html/index.html
+
 
 # Install NVM as the ec2-user
 sudo -u ec2-user bash <<'EOF2'
@@ -61,7 +57,11 @@ nvm alias default node
 
 npm install -g npm@latest 
 
-
+mkdir -p $HOME/ServerDB-ZPAO
+git clone -b AWSSecrets https://github.com/FAC29A/ServerDB-ZPAO.git $HOME/ServerDB-ZPAO
+cd $HOME/ServerDB-ZPAO
+# Copy the index.html from your project to the web server's document root
+sudo cp index.html /var/www/html/index.html
 
 npm install
 npm run start
